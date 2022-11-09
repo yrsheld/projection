@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+    arrow_projection:
+        container_name: arrow_projection
+        build:
+           context: arrow_projection
+        #command: rospack list
+        command: roslaunch arrow_projection arrow_projection.launch
+    rviz_camera_stream:
+        container_name: rviz_camera_stream
+        network_mode: "host"
+        environment: 
+           - "DISPLAY"
+        build:
+           context: .
+           dockerfile: rviz_camera_stream/Dockerfile
+        volumes:
+           - /tmp/.X11-unix:/tmp/.X11-unix:rw
+        depends_on:
+           - rosmaster
+        privileged: true
+        command: rviz
+    rosmaster:
+        image: osrf/ros:melodic-desktop
+        container_name: rosmaster
+        hostname: rosmaster
+        #network_mode: rosdocker
+        ports:
+           - "11311:11311"
+        command: roscore
+        

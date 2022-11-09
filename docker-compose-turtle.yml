@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+    turtle_controllers:
+        container_name: turtle_controllers
+        build:
+           context: ros2_docker_turtlesim/.
+           
+        command: ros2 launch ros2_docker_turtlesim controllers.launch.py
+#&& rosrun arrow_projection path_projection_node
+#command: roslaunch arrow_projection arrow_projection.launch

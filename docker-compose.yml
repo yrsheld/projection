@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+    arrow_projection:     # moveit
+        container_name: arrow_projection
+        build:
+           context: arrow_projection
+        container_name: arrow_projection
+        hostname: arrow_projection
+        environment: 
+           - "DISPLAY=$DISPLAY"
+           - "ROS_HOSTNAME=arrow_projection"
+           - "ROS_MASTER_URI=http://rosmaster:11311"
+        volumes:
+           - /tmp/.X11-unix:/tmp/.X11-unix:rw
+        depends_on:
+           - rosmaster
+        command: roslaunch arrow_projection arrow_projection.launch
+#    nav_core:             # moveit_ros_visualization
+#    	container_name: nav_core
+#    	build:
+#    	   context: nav_core
+        
+#    rviz_camera_stream:   # rviz_camera_stream & moveit_ros_visualization
+#        build:
+#           context: rviz_camera_stream
+#        container_name: rviz_camera_stream
+#        hostname: rviz_camera_stream
+#        environment: 
+#           - "DISPLAY=$DISPLAY"
+#           - "ROS_HOSTNAME=rviz_camera_stream"
+#           - "ROS_MASTER_URI=http://rosmaster:11311"
+#        volumes:
+#           - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#        depends_on:
+#           - rosmaster
+#      
+#        command: rosrun rviz rviz -d path_projection.rviz # /dev_ws/src/"rviz_file"
+        
+    image_view:         # image_view
+        build:
+           context: image_view
+        container_name: image_view
+        hostname: image_view
+        environment: 
+           - "DISPLAY=$DISPLAY"
+           - "ROS_HOSTNAME=image_view"
+           - "ROS_MASTER_URI=http://rosmaster:11311"
+        volumes:
+           - /tmp/.X11-unix:/tmp/.X11-unix:rw
+        depends_on:
+           - arrow_projection
+        command: rosrun image_view image_view image:=/projector/image
+        #command: rosrun rqt_image_view rqt_image_view image:=/projector/image
+    
+    rosmaster:
+        image: osrf/ros:melodic-desktop
+        container_name: rosmaster
+        hostname: rosmaster
+        ports:
+           - "11311:11311"
+        command: roscore
+        

@@ -1,0 +1,6 @@
+<launch>
+	<include file="$(find arrow_projection)/launch/camera_publisher.launch" />
+	<include file="$(find arrow_projection)/launch/tf_publisher.launch" />
+	<node name="path_projection_node" pkg="arrow_projection" type="path_projection_node" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find arrow_projection)/rviz/path_projection.rviz" /> 
+</launch>
