@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+    turtlebot2_melodic:
+        build:
+           context: turtlebot2_melodic
+        container_name: turtlebot2_melodic
+        hostname: turtlebot2_melodic
+        environment: 
+           - "DISPLAY=$DISPLAY"
+           - "ROS_HOSTNAME=turtlebot2_melodic"
+#          - "ROS_MASTER_URI=http://rosmaster:11311"
+        volumes:
+           - /tmp/.X11-unix:/tmp/.X11-unix:rw
+#        command: roslaunch turtlebot_bringup minimal.launch
+
+        command: roslaunch turtlebot_stage turtlebot_in_stage.launch
+
+ #   rosmaster:
+ #       image: osrf/ros:melodic-desktop
+ #       container_name: rosmaster
+ #       hostname: rosmaster
+ #       ports:
+ #          - "11311:11311"
+ #       command: roscore
+        
